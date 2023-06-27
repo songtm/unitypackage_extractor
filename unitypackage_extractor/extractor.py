@@ -14,7 +14,9 @@ def extractPackage(packagePath, outputPath=None, encoding='utf-8'):
   @param {string} [outputPath=os.getcwd()] Optional output path, otherwise will use cwd
   """
   if not outputPath:
-    outputPath = os.getcwd() # If not explicitly set, WindowsPath("") has no parents, and causes the escape test to fail
+    outputPath = os.getcwd() + "/_unitypackage_output" # If not explicitly set, WindowsPath("") has no parents, and causes the escape test to fail
+    if os.path.exists(outputPath):
+      shutil.rmtree(outputPath)
 
   with tempfile.TemporaryDirectory() as tmpDir:
     # Unpack the whole thing in one go (faster than traversing the tar)
@@ -56,9 +58,11 @@ def cli(args):
   """
   if not args:
     raise TypeError("No .unitypackage path was given. \n\nUSAGE: unitypackage_extractor [XXX.unitypackage] (optional/output/path)")
+  print("--- Begin Extracting...")
   startTime = time.time()
   extractPackage(args[0], args[1] if len(args) > 1 else "")
   print("--- Finished in %s seconds ---" % (time.time() - startTime))
 
 if __name__ == "__main__":
   cli(sys.argv[1:])
+  input("Press Enter to continue...")
