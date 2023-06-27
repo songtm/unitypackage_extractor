@@ -24,9 +24,9 @@ def extractPackage(packagePath, outputPath=None, encoding='utf-8'):
     # Extract each file in tmpDir to final destination
     for dirEntry in os.scandir(tmpDir):
       assetEntryDir = f"{tmpDir}/{dirEntry.name}"
-      if not os.path.exists(f"{assetEntryDir}/pathname") or \
-          not os.path.exists(f"{assetEntryDir}/asset"):
-        continue #Doesn't have the required files to extract it
+      # if not os.path.exists(f"{assetEntryDir}/pathname") or \
+      #     not os.path.exists(f"{assetEntryDir}/asset"):
+      #   continue #Doesn't have the required files to extract it
 
       # Has the required info to extract
       # Get the path to output to from /pathname
@@ -46,7 +46,8 @@ def extractPackage(packagePath, outputPath=None, encoding='utf-8'):
       #Extract to the pathname
       print(f"Extracting '{dirEntry.name}' as '{pathname}'")
       os.makedirs(os.path.dirname(assetOutPath), exist_ok=True) #Make the dirs up to the given folder
-      shutil.move(f"{assetEntryDir}/asset", assetOutPath)
+      if  os.path.exists(f"{assetEntryDir}/asset"): #只有目录的情况也要写目录meta
+        shutil.move(f"{assetEntryDir}/asset", assetOutPath)
       shutil.move(f"{assetEntryDir}/asset.meta", assetOutPath + ".meta")
 
 def cli(args):
