@@ -4,6 +4,12 @@ import sys
 import winreg as reg
 from setuptools import setup
 
+
+import os
+import sys
+script_directory = os.path.dirname(os.path.abspath(sys.argv[0]))
+print(script_directory)
+os.chdir(script_directory)
 cwd = os.getcwd()
 
 python_exe = sys.executable
